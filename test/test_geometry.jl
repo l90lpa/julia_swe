@@ -42,7 +42,7 @@
     end
 
     @testset "Rectangular domain partitioning" begin
-        domain = RectangularGrid(17,17)
+        domain = SVector{2, Int}(17,17)
         num_subdomains = 4
 
         subgrids, _, _ = partition_rectangular_grid(domain, num_subdomains)
@@ -65,7 +65,7 @@
         
         rank = 3
         nranks = 4
-        grid = RectangularGrid(17,17)
+        grid = SVector{2, Int}(17,17)
         halo_depth = 1
         ghost_depth = 1
 
@@ -97,7 +97,7 @@
         
         rank = 4
         nranks = 9
-        grid = RectangularGrid(3,3)
+        grid = SVector{2, Int}(3,3)
         halo_depth = 1
         ghost_depth = 1
 
@@ -129,7 +129,7 @@
         
         rank = 3
         nranks = 4
-        grid = RectangularGrid(6,6)
+        grid = SVector{2, Int}(6,6)
         halo_depth = 1
         ghost_depth = 2
 
@@ -145,7 +145,7 @@
         
         rank = 1
         nranks = 2
-        grid = RectangularGrid(2,1)
+        grid = SVector{2, Int}(2,1)
         halo_depth = 1
         ghost_depth = 0
 

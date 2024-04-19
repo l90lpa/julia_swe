@@ -1,11 +1,4 @@
 
-
-struct RectangularGrid
-    nx::Int
-    ny::Int
-end
-
-
 struct RectangularSubdomain
     partition_nx::Int
     partition_ny::Int
@@ -143,8 +136,8 @@ function prefix_sum(arr)
 end
 
 
-function partition_rectangular_grid(grid::RectangularGrid, num_subgrids)
-    ratio = grid.nx / grid.ny
+function partition_rectangular_grid(grid::SVector{2, Int}, num_subgrids)
+    ratio = grid.x / grid.y
 
     if ratio > 1
         xy_ordered_pair = (smaller, larger) -> (larger, smaller)
@@ -160,9 +153,9 @@ function partition_rectangular_grid(grid::RectangularGrid, num_subgrids)
 
     nxprocs, nyprocs = xy_factor_pairs[idx]
 
-    local_nx = split(grid.nx, nxprocs)
+    local_nx = split(grid.x, nxprocs)
     start_x = prefix_sum([1; local_nx[1:end-1]])
-    local_ny = split(grid.ny, nyprocs)
+    local_ny = split(grid.y, nyprocs)
     start_y = prefix_sum([1; local_ny[1:end-1]])
     x_partition = collect(zip(start_x, local_nx))
     y_partition = collect(zip(start_y, local_ny))
@@ -173,7 +166,7 @@ function partition_rectangular_grid(grid::RectangularGrid, num_subgrids)
 end
 
 
-function create_geometry(rank::Int, nranks::Int, grid::RectangularGrid, halo_depth::Int, ghost_depth::Int, global_origin::SVector{2, Float64}=SVector{2, Float64}(0.0,0.0), global_extent::SVector{2, Float64}=SVector{2, Float64}(1.0,1.0))
+function create_geometry(rank::Int, nranks::Int, grid::SVector{2, Int}, halo_depth::Int, ghost_depth::Int, global_origin::SVector{2, Float64}=SVector{2, Float64}(0.0,0.0), global_extent::SVector{2, Float64}=SVector{2, Float64}(1.0,1.0))
     subgrid_idx = rank + 1
 
     subgrids, nxprocs, nyprocs = partition_rectangular_grid(grid, nranks)
@@ -224,7 +217,7 @@ function create_geometry(rank::Int, nranks::Int, grid::RectangularGrid, halo_dep
         topology,
         global_origin,
         global_extent,
-        SVector{2, Int}(grid.nx, grid.ny),
+        SVector{2, Int}(grid.x, grid.y),
         SVector{2, Int}(local_subgrid.start_x, local_subgrid.start_y),
         SVector{2, Int}(local_subgrid.local_nx, local_subgrid.local_ny),
         halo,

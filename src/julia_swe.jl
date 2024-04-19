@@ -4,7 +4,7 @@ module julia_swe
     using IterTools
     using MPI
 
-    export Geometry, RectangularGrid, get_locally_owned_range, at_locally_owned,
+    export Geometry, get_locally_owned_range, at_locally_owned,
         get_local_domain_range, at_local_domain, get_locally_active_range,
         get_locally_active_shape, at_locally_active, partition_rectangular_grid,
         create_geometry, index_to_coord_xy_order, coord_to_index_xy_order

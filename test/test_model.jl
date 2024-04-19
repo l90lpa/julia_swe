@@ -11,11 +11,11 @@ nranks = MPI.Comm_size(comm)
 root = 0
 
 
-function fixture_create_geometry(rank::Int, nranks::Int, grid::RectangularGrid, extent::SVector{2, Float64})
+function fixture_create_geometry(rank::Int, nranks::Int, grid::SVector{2, Int}, extent::SVector{2, Float64})
     dx = extent.x / (grid.nx - 1)
     dy = extent.x / (grid.nx - 1)
     adjusted_extent = SVector{2, Float64}(extent.x - 2 * dx, extent.y - 2 * dy)
-    adjusted_grid = RectangularGrid(grid.nx - 2, grid.ny - 2)
+    adjusted_grid = SVector{2, Int}(grid.nx - 2, grid.ny - 2)
     geometry = create_geometry(rank, nranks, adjusted_grid, 1, 1, SVector{2, Float64}(dx,dy), adjusted_extent)
     return geometry
 end
@@ -30,7 +30,7 @@ end
     dt = 0.68 * dx / sqrt(g * 5030.0)
     num_steps = 1
 
-    grid = RectangularGrid(nx, ny)
+    grid = SVector{2, Int}(nx, ny)
     geometry = fixture_create_geometry(rank, nranks, grid, SVector{2, Float64}(xmax, ymax))
 
     s = create_null_state(geometry)
@@ -58,7 +58,7 @@ end
     dt = 0.68 * dx / sqrt(g * 5030.0)
     num_steps = 1
 
-    grid = RectangularGrid(nx, ny)
+    grid = SVector{2, Int}(nx, ny)
     geometry = fixture_create_geometry(rank, nranks, grid, SVector{2, Float64}(xmax, ymax))
     
     s = create_constant_height_state(geometry, 10.0)
@@ -86,7 +86,7 @@ end
     dt = 0.68 * dx / sqrt(g * 5030.0)
     num_steps = 100
 
-    grid = RectangularGrid(nx, ny)
+    grid = SVector{2, Int}(nx, ny)
     geometry = fixture_create_geometry(rank, nranks, grid, SVector{2, Float64}(xmax, ymax))
 
     s = create_tsunami_pulse_state(geometry)

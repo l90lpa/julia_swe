@@ -14,13 +14,13 @@ root = 0
     @assert nranks <= 4
 
     if nranks == 1
-        grid = RectangularGrid(1,1)
+        grid = SVector{2, Int}(1,1)
     elseif nranks == 2
-        grid = RectangularGrid(2,1)
+        grid = SVector{2, Int}(2,1)
     elseif nranks == 4
-        grid = RectangularGrid(2,2)
+        grid = SVector{2, Int}(2,2)
     else
-        grid = RectangularGrid(1,nranks)
+        grid = SVector{2, Int}(1,nranks)
     end
 
     halo_depth = 1
